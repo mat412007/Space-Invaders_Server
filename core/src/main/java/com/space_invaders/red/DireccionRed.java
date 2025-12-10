@@ -13,11 +13,10 @@ public class DireccionRed {
         this.puerto = puerto;
     }
 
-
-
     public InetAddress getIp(){
         return ip;
     }
+
     public int getPuerto(){
         return puerto;
     }

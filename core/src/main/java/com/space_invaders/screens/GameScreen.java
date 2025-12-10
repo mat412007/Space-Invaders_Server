@@ -25,8 +25,12 @@ public class GameScreen implements Screen {
     final MyGame game;
     private SpriteBatch batch;
 
+    private HiloServidor hs;
+
     private Texture fondo;
     private Sprite fondoPantalla;
+
+    private Sprite fondoEspera;
 
     private boolean multijugador;
     private boolean empiezaJuego = false;
@@ -44,7 +48,6 @@ public class GameScreen implements Screen {
     private Jugador jugador;
     private Jugador2 jugador_2;
     private AlienManager alienManager;
-    private HiloServidor hs;
 
     public GameScreen(final MyGame game, boolean multijugador) {
         this.game = game;
@@ -52,6 +55,7 @@ public class GameScreen implements Screen {
 
         fondo = new Texture("FondoJuego.png");
         fondoPantalla = new Sprite(fondo);
+        fondoEspera = new Sprite(new Texture("Espera.png"));
 
         this.multijugador = multijugador;
 
@@ -85,7 +89,11 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0f, 0f, 0f, 0f);
 
         if(!empiezaJuego){
-
+            batch.begin();
+            fondoEspera.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            fondoEspera.setPosition(0, 0);
+            fondoEspera.draw(batch);
+            batch.end();
         } else {
             float deltaTime = Gdx.graphics.getDeltaTime();
             alienManager.ActualizarMovimiento(deltaTime);
