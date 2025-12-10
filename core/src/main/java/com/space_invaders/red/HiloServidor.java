@@ -38,6 +38,7 @@ public class HiloServidor extends Thread{
             byte[] data = new byte[1024];
             DatagramPacket dp = new DatagramPacket(data, data.length);
             try {
+                System.out.println("Esperando mensaje...");
                 conexion.receive(dp);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -47,8 +48,10 @@ public class HiloServidor extends Thread{
     }
 
     private void procesarMensaje(DatagramPacket dp) {
-        String msg = Arrays.toString(dp.getData()).trim();
+        String msg = new String(dp.getData()).trim();
+        System.out.println("Mensaje recibido: " + msg);
         if(msg.equals("Conexion")) {
+            System.out.println("Conexion recibida de " + dp.getAddress() + ":" + dp.getPort());
             if(cantClientes < 2) {
                 clientes[cantClientes] = new DireccionRed(dp.getAddress(), dp.getPort());
                 enviarMensaje("OK", clientes[cantClientes].getIp(), clientes[cantClientes++].getPuerto());
