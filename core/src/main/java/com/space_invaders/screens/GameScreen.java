@@ -23,28 +23,28 @@ import java.awt.*;
 // GameScreen implementa Screen
 public class GameScreen implements Screen {
     final MyGame game;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
     private HiloServidor hs;
 
-    private Texture fondo;
-    private Sprite fondoPantalla;
+    private final Texture fondo;
+    private final Sprite fondoPantalla;
 
-    private Sprite fondoEspera;
+    private final Sprite fondoEspera;
 
     private boolean multijugador;
     private boolean empiezaJuego = false;
-    private Sprite icono_1;
-    private Sprite icono_2;
+    private final Sprite icono_1;
+    private final Sprite icono_2;
 
     private Skin skin;
     private Stage stage;
     private Table table;
 
-    private Texture nave;
-    private Texture nave_2;
-    private Texture disparo;
-    private Texture alien;
+    private final Texture nave;
+    private final Texture nave_2;
+    private final Texture disparo;
+    private final Texture alien;
     private Jugador jugador;
     private Jugador2 jugador_2;
     private AlienManager alienManager;
@@ -76,11 +76,9 @@ public class GameScreen implements Screen {
         hs = new HiloServidor();
         hs.start();
 
-        if(!multijugador) {
+        if(!multijugador) { // Ajusto las posiciones de las dos naves
             jugador.posicion = new Vector2((Gdx.graphics.getWidth()/2f)-(jugador.sprite.getWidth()/2f), 10);
             jugador_2.posicion = new Vector2(0, Gdx.graphics.getHeight());
-        } else {
-             // Inicio el hilo para el servidor
         }
     }
 
