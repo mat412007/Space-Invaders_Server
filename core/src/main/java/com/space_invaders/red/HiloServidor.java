@@ -13,6 +13,8 @@ public class HiloServidor extends Thread{
     private DireccionRed[] clientes = new DireccionRed[2]; //
     private int cantClientes = 0;
 
+    public boolean empezar = false;
+
     //Constructor
     public HiloServidor() {
         try {
@@ -54,10 +56,12 @@ public class HiloServidor extends Thread{
             System.out.println("Conexion recibida de " + dp.getAddress() + ":" + dp.getPort());
             if(cantClientes < 2) {
                 clientes[cantClientes] = new DireccionRed(dp.getAddress(), dp.getPort());
-                enviarMensaje("OK", clientes[cantClientes].getIp(), clientes[cantClientes++].getPuerto());
-                if(cantClientes == 2) {
-                    for(int i = 0; i < clientes.length; i++) {
-                        enviarMensaje("Empieza", clientes[i].getIp(), clientes[i].getPuerto());
+                enviarMensaje("OK", clientes[cantClientes].getIp(), clientes[cantClientes].getPuerto());
+                cantClientes++;
+                if(cantClientes == 2 && !empezar) {
+                    empezar = true;
+                    for (DireccionRed cliente : clientes) {
+                        enviarMensaje("Empieza", cliente.getIp(), cliente.getPuerto());
                     }
                 }
             }

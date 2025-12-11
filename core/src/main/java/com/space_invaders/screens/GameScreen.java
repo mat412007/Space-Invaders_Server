@@ -57,6 +57,8 @@ public class GameScreen implements Screen {
         fondoPantalla = new Sprite(fondo);
         fondoEspera = new Sprite(new Texture("Espera.png"));
 
+        hs = new HiloServidor();
+        hs.start();
         this.multijugador = multijugador;
 
         nave = new Texture("nave.png");
@@ -73,9 +75,6 @@ public class GameScreen implements Screen {
         icono_1 = new Sprite(nave);
         icono_2 = new Sprite(nave_2);
 
-        hs = new HiloServidor();
-        hs.start();
-
         if(!multijugador) { // Ajusto las posiciones de las dos naves
             jugador.posicion = new Vector2((Gdx.graphics.getWidth()/2f)-(jugador.sprite.getWidth()/2f), 10);
             jugador_2.posicion = new Vector2(0, Gdx.graphics.getHeight());
@@ -84,7 +83,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0f, 0f, 0f, 0f);
+        empiezaJuego = hs.empezar; // Comprobar si hay que empear el juego o no
 
         if(!empiezaJuego){
             batch.begin();
@@ -93,6 +92,7 @@ public class GameScreen implements Screen {
             fondoEspera.draw(batch);
             batch.end();
         } else {
+            ScreenUtils.clear(0f, 0f, 0f, 0f);
             float deltaTime = Gdx.graphics.getDeltaTime();
             alienManager.ActualizarMovimiento(deltaTime);
 
