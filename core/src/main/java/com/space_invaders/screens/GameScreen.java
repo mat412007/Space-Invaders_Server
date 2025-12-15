@@ -165,6 +165,7 @@ public class GameScreen implements Screen {
         nave_2.dispose();
         disparo.dispose();
         alien.dispose();
+        fondo.dispose();
 
         if (stage != null) {
             stage.dispose();

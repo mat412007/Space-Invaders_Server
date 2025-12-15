@@ -66,7 +66,7 @@ public class HiloServidor extends Thread{
 
             if (cantClientes < 2) {
                 clientes[cantClientes] = new DireccionRed(dp.getAddress(), dp.getPort());
-                enviarMensaje("OK", clientes[cantClientes].getIp(), clientes[cantClientes].getPuerto());
+                enviarMensaje("OK:"+(cantClientes+1), clientes[cantClientes].getIp(), clientes[cantClientes].getPuerto());
                 cantClientes++;
 
                 if (cantClientes == 2 && !empezar) {
@@ -85,7 +85,7 @@ public class HiloServidor extends Thread{
         for (int i = 0; i < cantClientes; i++) {
             if (clientes[i].getIp().equals(dp.getAddress()) &&
                 clientes[i].getPuerto() == dp.getPort()) {
-                idCliente = i+1;
+                idCliente = i;
                 break;
             }
         }
@@ -100,13 +100,13 @@ public class HiloServidor extends Thread{
         // Reenviar al otro cliente
         int otro = (idCliente == 0) ? 1 : 0;
 
-        if(msg.equals("IZQUIERDA") && idCliente == 1) {
+        if(msg.equals("IZQUIERDA") && idCliente == 0) {
             System.out.println("El jugador " + idCliente + " mueve a la " + msg);
-        } else if(msg.equals("IZQUIERDA") && idCliente == 2) {
+        } else if(msg.equals("IZQUIERDA") && idCliente == 1) {
+            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
+        } else if(msg.equals("DERECHA") && idCliente == 0) {
             System.out.println("El jugador " + idCliente + " mueve a la " + msg);
         } else if(msg.equals("DERECHA") && idCliente == 1) {
-            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
-        } else if(msg.equals("DERECHA") && idCliente == 2) {
             System.out.println("El jugador " + idCliente + " mueve a la " + msg);
         }
 
