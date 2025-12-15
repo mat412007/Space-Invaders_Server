@@ -85,20 +85,30 @@ public class HiloServidor extends Thread{
         for (int i = 0; i < cantClientes; i++) {
             if (clientes[i].getIp().equals(dp.getAddress()) &&
                 clientes[i].getPuerto() == dp.getPort()) {
-                idCliente = i;
+                idCliente = i+1;
                 break;
             }
         }
-
+        // En caso de cliente desconocido
         if (idCliente == -1) {
             System.out.println("Mensaje de cliente desconocido");
             return;
         }
 
-        System.out.println("Mensaje del cliente " + (idCliente+1) + ": " + msg);
+        // System.out.println("Mensaje del cliente " + (idCliente+1) + ": " + msg);
 
         // Reenviar al otro cliente
         int otro = (idCliente == 0) ? 1 : 0;
+
+        if(msg.equals("IZQUIERDA") && idCliente == 1) {
+            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
+        } else if(msg.equals("IZQUIERDA") && idCliente == 2) {
+            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
+        } else if(msg.equals("DERECHA") && idCliente == 1) {
+            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
+        } else if(msg.equals("DERECHA") && idCliente == 2) {
+            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
+        }
 
         if (cantClientes == 2) {
             enviarMensaje(msg, clientes[otro].getIp(), clientes[otro].getPuerto());
