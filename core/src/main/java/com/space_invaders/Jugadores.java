@@ -57,13 +57,13 @@ public class Jugadores {
 
         posicion_disparo.y += deltaTime*velocidad_disparo;
         // Accion de disparar
-        if(Gdx.input.isKeyPressed(Keys.W) && posicion_disparo.y >= Gdx.graphics.getHeight() && id==1){
-            posicion_disparo.x = posicion.x + sprite.getWidth()/2 - sprite_disparo.getWidth()/2; // Centrar el disparo en la nave
-            posicion_disparo.y = posicion.y + sprite.getHeight();
-        } else if(Gdx.input.isKeyPressed(Keys.UP) && posicion_disparo.y >= Gdx.graphics.getHeight() && id==2){
-            posicion_disparo.x = posicion.x + sprite.getWidth()/2 - sprite_disparo.getWidth()/2;// +(sprite_disparo.getWidth()/4);
-            posicion_disparo.y = posicion.y + sprite.getHeight();
-        }
+//        if(Gdx.input.isKeyPressed(Keys.W) && posicion_disparo.y >= Gdx.graphics.getHeight() && id==1){
+//            posicion_disparo.x = posicion.x + sprite.getWidth()/2 - sprite_disparo.getWidth()/2; // Centrar el disparo en la nave
+//            posicion_disparo.y = posicion.y + sprite.getHeight();
+//        } else if(Gdx.input.isKeyPressed(Keys.UP) && posicion_disparo.y >= Gdx.graphics.getHeight() && id==2){
+//            posicion_disparo.x = posicion.x + sprite.getWidth()/2 - sprite_disparo.getWidth()/2;// +(sprite_disparo.getWidth()/4);
+//            posicion_disparo.y = posicion.y + sprite.getHeight();
+//        }
     }
 
     // Metodo para dibujar la nave en la posicion actualizada
