@@ -48,22 +48,6 @@ public class Jugadores {
 
     // Metodo para actualizar la posición de la nave
     public void Actualizar(float deltaTime){
-        if(id == 1){
-            if(Gdx.input.isKeyPressed(Keys.A)){
-                posicion.x -= deltaTime * velocidad;// Mover a la izquierda
-            }
-
-            if(Gdx.input.isKeyPressed(Keys.D)){
-                posicion.x += deltaTime * velocidad;// Mover a la derecha
-            }
-        } else if(id == 2){
-            if(Gdx.input.isKeyPressed(Keys.LEFT)) {
-                posicion.x -= deltaTime * velocidad; // mover a la izquierda
-            }
-            if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
-                posicion.x += deltaTime * velocidad; // mover a la derecha
-            }
-        }
         // Para que la nave no se salga de los limites
         if(posicion.x < 150){
             posicion.x = 150;
@@ -84,7 +68,6 @@ public class Jugadores {
 
     // Metodo para dibujar la nave en la posicion actualizada
     public void Dibujar(SpriteBatch batch){
-        Actualizar(Gdx.graphics.getDeltaTime());
         sprite.setPosition(posicion.x, posicion.y);
         sprite.draw(batch);
 

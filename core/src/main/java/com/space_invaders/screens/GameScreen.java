@@ -2,11 +2,9 @@ package com.space_invaders.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen; // Importamos la interfaz Screen
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,8 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.space_invaders.*;
 import com.space_invaders.red.HiloServidor;
-
-import java.awt.*;
 
 // GameScreen implementa Screen
 public class GameScreen implements Screen {
@@ -74,7 +70,7 @@ public class GameScreen implements Screen {
         this.multijugador = multijugador;
 
         if(multijugador) {
-            hs = new HiloServidor();
+            hs = new HiloServidor(this);
             hs.start();
         }
 
@@ -116,7 +112,11 @@ public class GameScreen implements Screen {
 
         // Dibujamos las naves de los jugadores y los aliens
         jugador.Dibujar(batch);
-        jugador_2.Dibujar(batch);
+        jugador.Actualizar(deltaTime);
+        if (multijugador) {
+            jugador_2.Dibujar(batch);
+            jugador_2.Actualizar(deltaTime);
+        }
         alienManager.Dibujar(batch);
 
         // Líneas de límite del espacio de juego
@@ -176,6 +176,43 @@ public class GameScreen implements Screen {
 
         if (hs != null) {
             hs.cerrar();
+        }
+    }
+
+    public void moverIzquierda(int idJugador) {
+        if (idJugador == 1) {
+            jugador.posicion.x -= Gdx.graphics.getDeltaTime() * jugador.velocidad;
+            hs.enviarMensajeATodos("actualizarPosicion:x:1:" + jugador.posicion.x);
+        } else if (idJugador == 2) {
+            jugador_2.posicion.x -= Gdx.graphics.getDeltaTime() * jugador_2.velocidad;
+            hs.enviarMensajeATodos("actualizarPosicion:x:2:" + jugador_2.posicion.x);
+        }
+    }
+
+    public void moverDerecha(int idJugador) {
+        if (idJugador == 1) {
+            jugador.posicion.x += Gdx.graphics.getDeltaTime() * jugador.velocidad;
+            hs.enviarMensajeATodos("actualizarPosicion:x:1:" + jugador.posicion.x);
+        } else if (idJugador == 2) {
+            jugador_2.posicion.x += Gdx.graphics.getDeltaTime() * jugador_2.velocidad;
+            hs.enviarMensajeATodos("actualizarPosicion:x:2:" + jugador_2.posicion.x);
+        }
+    }
+
+    public void disparar(int idJugador) {
+        if (idJugador == 1) {
+            if (jugador.posicion_disparo.y >= Gdx.graphics.getHeight()) {
+                jugador.posicion_disparo.x = jugador.posicion.x + jugador.sprite.getWidth() / 2 - jugador.sprite_disparo.getWidth() / 2; // Centrar el disparo en la nave
+                jugador.posicion_disparo.y = jugador.posicion.y + jugador.sprite.getHeight();
+                hs.enviarMensajeATodos("actualizarPosicion:d:1:" + jugador.posicion_disparo.x + ":" + jugador.posicion_disparo.y);
+            }
+        } else if (idJugador == 2) {
+            if (jugador_2.posicion_disparo.y >= Gdx.graphics.getHeight()) {
+                jugador_2.posicion_disparo.x = jugador_2.posicion.x + jugador_2.sprite.getWidth() / 2 - jugador_2.sprite_disparo.getWidth() / 2; // Centrar el disparo en la nave
+                jugador_2.posicion_disparo.y = jugador_2.posicion.y + jugador_2.sprite.getHeight();
+                hs.enviarMensajeATodos("actualizarPosicion:d:2:" + jugador_2.posicion_disparo.x + ":" + jugador_2.posicion_disparo.y);
+
+            }
         }
     }
 

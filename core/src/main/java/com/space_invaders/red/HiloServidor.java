@@ -1,5 +1,6 @@
 package com.space_invaders.red;
 
+import com.space_invaders.screens.GameScreen;
 import com.space_invaders.screens.MenuScreen;
 
 import java.io.IOException;
@@ -12,11 +13,13 @@ public class HiloServidor extends Thread{
     private boolean fin = false;
     private DireccionRed[] clientes = new DireccionRed[2]; //
     private int cantClientes = 0;
+    private GameScreen gameScreen;
 
     public boolean empezar = false;
 
     //Constructor
-    public HiloServidor() {
+    public HiloServidor(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         try {
             conexion = new DatagramSocket(9998);
         } catch (SocketException e) {
@@ -31,7 +34,12 @@ public class HiloServidor extends Thread{
         }
     }
 
-    private void enviarMensaje(String msg, InetAddress ip, int puerto) {
+    public void enviarMensajeATodos(String msg) {
+        for (int i = 0; i < cantClientes; i++) {
+            enviarMensaje(msg, clientes[i].getIp(), clientes[i].getPuerto());
+        }
+    }
+    public void enviarMensaje(String msg, InetAddress ip, int puerto) {
         byte[] data = msg.getBytes();
         DatagramPacket dp = new DatagramPacket(data, data.length, ip, puerto);
         try {
@@ -71,9 +79,7 @@ public class HiloServidor extends Thread{
 
                 if (cantClientes == 2 && !empezar) {
                     empezar = true;
-                    for (DireccionRed c : clientes) {
-                        enviarMensaje("Empieza", c.getIp(), c.getPuerto());
-                    }
+                    enviarMensajeATodos("Empieza"); // Envio mensaje a ambos clientes de empezar
                 }
             }
             return;
@@ -95,24 +101,24 @@ public class HiloServidor extends Thread{
             return;
         }
 
-        // System.out.println("Mensaje del cliente " + (idCliente+1) + ": " + msg);
-
         // Reenviar al otro cliente
         int otro = (idCliente == 0) ? 1 : 0;
-
-        if(msg.equals("IZQUIERDA") && idCliente == 0) {
-            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
-        } else if(msg.equals("IZQUIERDA") && idCliente == 1) {
-            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
-        } else if(msg.equals("DERECHA") && idCliente == 0) {
-            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
-        } else if(msg.equals("DERECHA") && idCliente == 1) {
-            System.out.println("El jugador " + idCliente + " mueve a la " + msg);
-        }
-
         if (cantClientes == 2) {
             enviarMensaje(msg, clientes[otro].getIp(), clientes[otro].getPuerto());
         }
+
+        System.out.println("Mensaje del cliente " + (idCliente+1) + ": " + msg);
+        String[] partes = msg.split(":");
+        if(msg.startsWith("mover_izquierda")){
+            this.gameScreen.moverIzquierda(Integer.parseInt(partes[1]));
+        }
+        if(msg.startsWith("mover_derecha")){
+            this.gameScreen.moverDerecha(Integer.parseInt(partes[1]));
+        }
+        if(msg.startsWith("disparar")){
+            this.gameScreen.disparar(Integer.parseInt(partes[1]));
+        }
+
     }
 
 
