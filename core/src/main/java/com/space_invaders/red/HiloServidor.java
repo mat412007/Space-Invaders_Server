@@ -117,6 +117,9 @@ public class HiloServidor extends Thread{
         if(msg.startsWith("disparar")){
             this.gameScreen.disparar(Integer.parseInt(partes[1]));
         }
+        if (msg.startsWith("actualizarDisparo")) {
+            enviarMensaje(msg, clientes[otro].getIp(), clientes[otro].getPuerto());
+        }
 
     }
 
