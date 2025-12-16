@@ -51,11 +51,11 @@ public class HiloServidor extends Thread{
 
     @Override
     public void run() {
+        System.out.println("Esperando mensaje...");
         do {
             byte[] data = new byte[1024];
             DatagramPacket dp = new DatagramPacket(data, data.length);
             try {
-                System.out.println("Esperando mensaje...");
                 conexion.receive(dp);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -66,7 +66,6 @@ public class HiloServidor extends Thread{
 
     private void procesarMensaje(DatagramPacket dp) {
         String msg = new String(dp.getData()).trim();
-        System.out.println("Mensaje recibido: " + msg);
 
         // --- PRIMER CASO: MENSAJE "Conexion" ---
         if (msg.equals("Conexion")) {
@@ -107,7 +106,7 @@ public class HiloServidor extends Thread{
             enviarMensaje(msg, clientes[otro].getIp(), clientes[otro].getPuerto());
         }
 
-        System.out.println("Mensaje del cliente " + (idCliente+1) + ": " + msg);
+        System.out.println("Cliente " + (idCliente+1) + ": " + msg);
         String[] partes = msg.split(":");
         if(msg.startsWith("mover_izquierda")){
             this.gameScreen.moverIzquierda(Integer.parseInt(partes[1]));
